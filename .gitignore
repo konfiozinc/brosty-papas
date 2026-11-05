@@ -1,6 +1,8 @@
 # Lo interno no va al repositorio público: se queda en el equipo.
 evidencias/
 LEEME-REVISION.txt
+# Credenciales: NUNCA al repositorio (el token de publicación va aquí).
+.secrets/
 herramientas/node_modules/
 node_modules/
 *.log
