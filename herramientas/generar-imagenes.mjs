@@ -22,7 +22,7 @@
      assets/img/marca/logo-brosty-transparente.png
      assets/img/marca/favicon-32.png · favicon-64.png · apple-touch-icon.png
      assets/img/marca/favicon.svg
-     assets/img/og/og-1200x630.png
+     assets/img/og/og-1200x630-v2.png
 
    Uso:  node herramientas/generar-imagenes.mjs
    ═══════════════════════════════════════════════════════════════════════ */
@@ -224,9 +224,9 @@ const control = await pOg.evaluate(async () => {
 });
 await pOg.waitForTimeout(250);
 
-const salidaOg = path.join(RAIZ, 'assets', 'img', 'og', 'og-1200x630.png');
+const salidaOg = path.join(RAIZ, 'assets', 'img', 'og', 'og-1200x630-v2.png');
 await pOg.screenshot({ path: salidaOg, clip: { x: 0, y: 0, width: 1200, height: 630 } });
-console.log(`✓ og-1200x630.png         1200×630 · ${Math.round(fs.statSync(salidaOg).size / 1024)} KB`);
+console.log(`✓ og-1200x630-v2.png      1200×630 · ${Math.round(fs.statSync(salidaOg).size / 1024)} KB`);
 await ctxOg.close();
 await navegador.close();
 

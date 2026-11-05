@@ -40,7 +40,7 @@ const debenServirse = [
   ['favicon 32', '/assets/img/marca/favicon-32.png'],
   ['favicon 64', '/assets/img/marca/favicon-64.png'],
   ['apple-touch-icon', '/assets/img/marca/apple-touch-icon.png'],
-  ['imagen para compartir', '/assets/img/og/og-1200x630.png']
+  ['imagen para compartir', '/assets/img/og/og-1200x630-v2.png']
 ];
 const respuestas = {};
 for (const [nombre, ruta] of debenServirse) {
