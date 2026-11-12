@@ -372,21 +372,72 @@
     return lineas.join('\n');
   }
 
+  /* ───────── abrir WhatsApp sin mentir sobre el bloqueo ─────────
+
+     `window.open(url, '_blank', 'noopener')` devuelve SIEMPRE null, también
+     cuando la pestaña se abre: al pedir `noopener` el navegador crea la ventana
+     en otro contexto y no entrega la referencia. El código anterior leía ese
+     null como «el navegador bloqueó la ventana», así que mostraba un aviso falso
+     y dejaba el carrito abierto aunque WhatsApp sí se hubiera abierto.
+
+     Ahora se abre sin la marca `noopener` para que el valor devuelto vuelva a
+     significar algo (un null de verdad = ventana bloqueada) y el acceso a
+     `window.opener` se corta a mano en el acto, que es exactamente la misma
+     protección: se anula antes de que la página de destino pueda ejecutar una
+     sola línea. Si aun así está bloqueado, se pulsa un enlace real, porque los
+     enlaces con target="_blank" no pasan por el bloqueador de ventanas. */
+  function pulsarEnlace(url) {
+    var enlace = document.createElement('a');
+    enlace.href = url;
+    enlace.target = '_blank';
+    enlace.rel = 'noopener noreferrer';
+    enlace.style.position = 'fixed';
+    enlace.style.left = '-9999px';
+    document.body.appendChild(enlace);
+    var pulsado = false;
+    try {
+      enlace.click();
+      pulsado = true;
+    } catch (e) {
+      pulsado = false;
+    }
+    window.setTimeout(function () {
+      if (enlace.parentNode) enlace.parentNode.removeChild(enlace);
+    }, 0);
+    return pulsado;
+  }
+
+  function abrirWhatsApp(url) {
+    var ventana = null;
+    try { ventana = window.open(url, '_blank'); } catch (e) { ventana = null; }
+
+    if (ventana) {
+      /* Se corta el acceso al opener de inmediato (misma protección que
+         `noopener`) y se deja el panel libre. */
+      try { ventana.opener = null; } catch (e) { /* ya en otro contexto: nada que hacer */ }
+      cerrarCarrito();
+      avisar('Abrimos WhatsApp con tu pedido. Pulsa enviar para que lo reciban.');
+      return { abierto: true, metodo: 'pestana' };
+    }
+
+    /* Aquí el null sí es una señal real de bloqueo. Se intenta el enlace. */
+    if (pulsarEnlace(url)) {
+      cerrarCarrito();
+      avisar('Abrimos WhatsApp con tu pedido. Si no la ves, usa el botón verde de WhatsApp.');
+      return { abierto: true, metodo: 'enlace' };
+    }
+
+    /* Ni pestaña ni enlace: el pedido NO se toca, para no perderlo. */
+    avisar('No pudimos abrir WhatsApp automáticamente. Tu pedido sigue guardado: ábrelo desde el botón verde.');
+    return { abierto: false, metodo: 'ninguno' };
+  }
+
   function enviar() {
     if (unidades() === 0) return;
     var texto = armarMensaje();
     var url = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(texto);
-    var ventana = null;
-    try { ventana = window.open(url, '_blank', 'noopener'); } catch (e) { ventana = null; }
-    if (ventana) {
-      /* Se cierra el panel para que la persona vea la página y el aviso, en vez
-         de quedarse con el carrito tapando la pantalla. */
-      cerrarCarrito();
-      avisar('Se abrió WhatsApp con tu pedido. Envíalo para que lo reciban.');
-    } else {
-      avisar('El navegador bloqueó la ventana: abre WhatsApp desde el botón flotante.');
-    }
-    return { texto: texto, url: url, abierto: !!ventana };
+    var resultado = abrirWhatsApp(url);
+    return { texto: texto, url: url, abierto: resultado.abierto, metodo: resultado.metodo };
   }
 
   if (botonEnviar) botonEnviar.addEventListener('click', enviar);

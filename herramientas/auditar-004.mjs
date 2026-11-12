@@ -450,6 +450,10 @@ console.log('\n═══ 5 · CARRITO Y VARIANTES ═══');
   page.on('pageerror', (e) => errores.push('PAGEERROR: ' + e.message.slice(0, 140)));
   await page.addInitScript(() => {
     window.__aperturas = [];
+    /* OJO: sustituir window.open sirve para capturar la URL, pero NO prueba que
+       la pestaña se abra de verdad y esconde los fallos del valor devuelto. La
+       apertura real y el corte de window.opener se comprueban en
+       herramientas/probar-envio-004.mjs (KZ-BROSTY-004-A). */
     window.open = function (url) { window.__aperturas.push(String(url)); return { closed: false, focus() {}, close() {} }; };
   });
   await page.goto(BASE, { waitUntil: 'load' });
