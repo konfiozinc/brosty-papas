@@ -276,6 +276,27 @@ button { font-family: inherit; cursor: pointer; }
 /* Las tres variantes del volante. Mismo tamaño, distinto color. */
 .btn--amarillo { background: var(--amarillo); color: var(--carbon); box-shadow: 0 12px 28px rgb(255 201 40 / .32); }
 .btn--rojo { background: var(--rojo); color: var(--crema); box-shadow: 0 12px 28px rgb(201 31 50 / .30); }
+/* Secundario de la portada («Ver menú»).
+   Amarillo corporativo con texto oscuro, como pidió el director, pero más plano
+   que el primario: sin halo y con un filo oscuro. Así «Pedir por WhatsApp» sigue
+   siendo el que manda. Antes iba en rojo sobre el hero rojo y se perdía en el
+   fondo: el relleno quedaba a 1,5:1 del fondo, cuando el mínimo para distinguir
+   el borde de un componente es 3:1. */
+.btn--menu {
+  background: var(--amarillo);
+  color: var(--carbon);
+  border-color: var(--carbon);
+  box-shadow: none;
+}
+.btn--menu:hover {
+  background: #FFD84F;
+  border-color: var(--carbon);
+  box-shadow: 0 10px 22px rgb(255 201 40 / .30);
+}
+.btn--menu:active { background: #F2BC18; }
+/* El anillo de foco por omisión es rojo y aquí quedaría sobre el hero rojo; en
+   este botón se pinta en crema, que sí se separa del fondo. */
+.btn--menu:focus-visible { outline: 3px solid var(--crema); outline-offset: 2px; }
 .btn--carbon {
   background: rgb(36 36 36 / .55);
   border-color: rgb(255 248 233 / .55);
