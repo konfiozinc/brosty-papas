@@ -603,6 +603,14 @@ button { font-family: inherit; cursor: pointer; }
 }
 .carrito__total strong { font-family: var(--fuente-titulo); font-size: 1rem; color: var(--carbon); }
 
+.carrito__manual-aviso {
+  margin: .55rem 0 0;
+  font-size: .78rem;
+  line-height: 1.45;
+  color: var(--tinta-tenue);
+  text-align: center;
+}
+
 .carrito__vaciar {
   display: block; margin: .5rem auto 0;
   border: 0; background: none;

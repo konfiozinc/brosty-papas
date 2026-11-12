@@ -89,6 +89,8 @@
   var campoNombre = $('#f-nombre');
   var campoEntrega = $('#f-entrega');
   var botonEnviar = $('#enviar-pedido');
+  var botonManual = $('#abrir-manual');
+  var avisoManual = $('#abrir-manual-aviso');
   var toast = $('#toast');
 
   /* ───────── aviso flotante ───────── */
@@ -273,6 +275,14 @@
     if (barraResumen) barraResumen.textContent = n === 1 ? '1 producto' : n + ' productos';
     if (barra) barra.classList.toggle('visible', n > 0);
     if (botonEnviar) botonEnviar.disabled = n === 0;
+
+    /* Si la acción manual está a la vista, se mantiene al día: si la persona
+       añade o quita productos, el enlace lleva el pedido actual, con sus
+       cantidades, variantes y observaciones. */
+    if (botonManual && !botonManual.hidden) {
+      if (n === 0) ocultarAccionManual();
+      else botonManual.href = construirUrl();
+    }
     if (vacio) vacio.hidden = n > 0;
     if (datos) datos.hidden = n === 0;
 
@@ -372,72 +382,66 @@
     return lineas.join('\n');
   }
 
-  /* ───────── abrir WhatsApp sin mentir sobre el bloqueo ─────────
+  /* ───────── cómo se abre el pedido en WhatsApp ─────────
 
-     `window.open(url, '_blank', 'noopener')` devuelve SIEMPRE null, también
-     cuando la pestaña se abre: al pedir `noopener` el navegador crea la ventana
-     en otro contexto y no entrega la referencia. El código anterior leía ese
-     null como «el navegador bloqueó la ventana», así que mostraba un aviso falso
-     y dejaba el carrito abierto aunque WhatsApp sí se hubiera abierto.
+     Qué permite saber el navegador y qué no:
 
-     Ahora se abre sin la marca `noopener` para que el valor devuelto vuelva a
-     significar algo (un null de verdad = ventana bloqueada) y el acceso a
-     `window.opener` se corta a mano en el acto, que es exactamente la misma
-     protección: se anula antes de que la página de destino pueda ejecutar una
-     sola línea. Si aun así está bloqueado, se pulsa un enlace real, porque los
-     enlaces con target="_blank" no pasan por el bloqueador de ventanas. */
-  function pulsarEnlace(url) {
-    var enlace = document.createElement('a');
-    enlace.href = url;
-    enlace.target = '_blank';
-    enlace.rel = 'noopener noreferrer';
-    enlace.style.position = 'fixed';
-    enlace.style.left = '-9999px';
-    document.body.appendChild(enlace);
-    var pulsado = false;
-    try {
-      enlace.click();
-      pulsado = true;
-    } catch (e) {
-      pulsado = false;
-    }
-    window.setTimeout(function () {
-      if (enlace.parentNode) enlace.parentNode.removeChild(enlace);
-    }, 0);
-    return pulsado;
+       · `window.open(url, '_blank')` devuelve una referencia SOLO si creó la
+         ventana; un null es un bloqueo de verdad. Es la única señal fiable de
+         apertura que da la plataforma.
+       · Pulsar un enlace con target="_blank" desde código no devuelve nada: que
+         `.click()` no lance una excepción NO demuestra que WhatsApp se abriera.
+         La versión anterior daba ese intento por bueno y lo anunciaba como
+         éxito, que es justo lo que no se puede afirmar.
+
+     Por eso ahora hay UN solo intento automático (repetirlo podría abrir
+     pestañas duplicadas) y, cuando la apertura no se puede confirmar, el panel
+     muestra un enlace real —«Abrir WhatsApp con mi pedido»— que pulsa la
+     persona. El pedido nunca se modifica ni se vacía, así que no se pierde por
+     un fallo de apertura. */
+  function construirUrl() {
+    return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(armarMensaje());
   }
 
-  function abrirWhatsApp(url) {
-    var ventana = null;
-    try { ventana = window.open(url, '_blank'); } catch (e) { ventana = null; }
-
-    if (ventana) {
-      /* Se corta el acceso al opener de inmediato (misma protección que
-         `noopener`) y se deja el panel libre. */
-      try { ventana.opener = null; } catch (e) { /* ya en otro contexto: nada que hacer */ }
-      cerrarCarrito();
-      avisar('Abrimos WhatsApp con tu pedido. Pulsa enviar para que lo reciban.');
-      return { abierto: true, metodo: 'pestana' };
+  function mostrarAccionManual(url) {
+    if (botonManual) {
+      botonManual.href = url;
+      botonManual.hidden = false;
     }
+    if (avisoManual) avisoManual.hidden = false;
+    /* Se retira el botón de intento automático: con una sola acción a la vista
+       no se pueden abrir dos pestañas por descuido. */
+    if (botonEnviar) botonEnviar.hidden = true;
+  }
 
-    /* Aquí el null sí es una señal real de bloqueo. Se intenta el enlace. */
-    if (pulsarEnlace(url)) {
-      cerrarCarrito();
-      avisar('Abrimos WhatsApp con tu pedido. Si no la ves, usa el botón verde de WhatsApp.');
-      return { abierto: true, metodo: 'enlace' };
-    }
-
-    /* Ni pestaña ni enlace: el pedido NO se toca, para no perderlo. */
-    avisar('No pudimos abrir WhatsApp automáticamente. Tu pedido sigue guardado: ábrelo desde el botón verde.');
-    return { abierto: false, metodo: 'ninguno' };
+  function ocultarAccionManual() {
+    if (botonManual) botonManual.hidden = true;
+    if (avisoManual) avisoManual.hidden = true;
+    if (botonEnviar) botonEnviar.hidden = false;
   }
 
   function enviar() {
     if (unidades() === 0) return;
     var texto = armarMensaje();
-    var url = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(texto);
-    var resultado = abrirWhatsApp(url);
-    return { texto: texto, url: url, abierto: resultado.abierto, metodo: resultado.metodo };
+    var url = construirUrl();
+    var ventana = null;
+
+    try { ventana = window.open(url, '_blank'); } catch (e) { ventana = null; }
+
+    if (ventana) {
+      /* Se corta el acceso al opener en el acto (anti reverse tabnabbing). */
+      try { ventana.opener = null; } catch (e) { /* ya en otro contexto */ }
+      ocultarAccionManual();
+      cerrarCarrito();
+      avisar('Abrimos WhatsApp con tu pedido. Pulsa enviar para que lo reciban.');
+      return { texto: texto, url: url, confirmado: true, metodo: 'pestana' };
+    }
+
+    /* No se repite el intento automático: no se puede confirmar y duplicaría
+       pestañas. Se muestra la acción manual y el pedido queda intacto. */
+    mostrarAccionManual(url);
+    avisar('Tu pedido está listo. Pulsa «Abrir WhatsApp con mi pedido».');
+    return { texto: texto, url: url, confirmado: false, metodo: 'manual' };
   }
 
   if (botonEnviar) botonEnviar.addEventListener('click', enviar);
@@ -457,6 +461,7 @@
   window.BROSTY = {
     pedido: pedido,
     armarMensaje: armarMensaje,
+    construirUrl: construirUrl,
     enviar: enviar,
     sumar: sumar,
     restar: restar,
