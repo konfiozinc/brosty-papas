@@ -1,20 +1,35 @@
 /* ═══════════════════════════════════════════════════════════════════════
    BROSTY PAPAS · assets/css/estilos.css
    KZ-BROSTY-001 (base) · KZ-BROSTY-003 (escritorio, logo real, botones)
+   KZ-BROSTY-004 (corrección integral: tarjetas, iconos, navegación, táctil)
 
    PALETA (la del volante)
      rojo #C91F32 · naranja #FF7A18 · amarillo #FFC928 · crema #FFF8E9 · carbón #242424
 
-   CAMBIOS DE LA MISIÓN 003
-     · El ancho de trabajo es el 90 % de la ventana (antes 1180 px fijos, que en
-       un monitor de 1440 dejaba la página encogida en el centro).
-     · La portada es una rejilla de DOS columnas REALES: texto a la izquierda y
-       el logotipo real a la derecha. Antes declaraba dos columnas pero solo
-       tenía un hijo, así que la mitad derecha quedaba vacía.
-     · Los tres botones de la portada comparten tamaño y forma, con colores del
-       volante (amarillo, rojo y carbón). Fuera el verde de WhatsApp de ahí.
-     · El botón flotante sí lleva el verde oficial (#25D366) con el icono real.
-     · Menú en rejilla de 4 columnas en pantallas grandes.
+   QUÉ CAMBIÓ EN LA MISIÓN 004 Y POR QUÉ
+     · [hidden] no hacía nada. Varias reglas (`.agregar`, `.stepper`,
+       `.carrito__datos`) declaran `display`, y un `display` de autor gana al
+       `display:none` que el navegador aplica a [hidden]. Resultado: en cada
+       tarjeta se veían a la vez «+ Añadir» y el contador «− 0 +», y los datos de
+       entrega aparecían con el pedido vacío. Se corrige de raíz con una regla
+       `[hidden]` de la casa.
+     · La tarjeta tenía tres columnas (icono · texto · botones). Al no ocultarse
+       nada, la columna de botones se comía el ancho y el nombre se partía en 3 o
+       4 líneas. Ahora el icono y el texto van arriba y la acción ocupa su propia
+       fila: el nombre siempre tiene el ancho de la tarjeta.
+     · El nombre del plato deja de usar la tipografía de titular (Arial Black,
+       muy ancha y ausente en Android, donde caía a una fuente cualquiera) y pasa
+       a la tipografía de texto en negrita. Se lee igual en todos los equipos.
+     · Las columnas ya no se fuerzan: `auto-fit` con un mínimo real de 272 px
+       decide cuántas caben de verdad.
+     · Objetivos táctiles a 44 px (chips, variantes, contador, papelera…).
+     · Los chips son navegación por anclas y ahora tienen una altura fija, para
+       que `scroll-margin-top` deje el título exactamente debajo de las barras.
+     · El carrito cerrado usa `visibility: hidden`: deja de ser alcanzable con el
+       tabulador (antes se podía entrar a un panel invisible).
+     · Los emojis del sistema se sustituyen por ilustraciones SVG propias
+       (assets/img/iconos/*.svg, empaquetadas en index.html por
+       herramientas/generar-iconos.mjs).
 
    Móvil primero · sin desbordes en 360, 375, 390, 430 · nada por fuera.
    ═══════════════════════════════════════════════════════════════════════ */
@@ -31,19 +46,25 @@
   --tinta: var(--carbon);
   --tinta-tenue: #6B5F55;
 
-  --radio: 18px;
+  --radio: 20px;
   --radio-sm: 12px;
   --sombra: 0 18px 44px rgb(36 36 36 / .18);
   --sombra-fuerte: 0 26px 60px rgb(36 36 36 / .30);
   --cabecera: 64px;
+  --alto-chips: 60px;
   --barra-pedido: 72px;
   --ancho-max: 1500px;
+  --icono-plato: 54px;
 
   --fuente-titulo: 'Arial Black', 'Segoe UI Black', Impact, 'Trebuchet MS', sans-serif;
   --fuente-texto: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
+
+/* El navegador aplica display:none a [hidden], pero cualquier `display` de autor
+   lo anula. Esta regla es la que hace que ocultar elementos funcione. */
+[hidden] { display: none !important; }
 
 html { scroll-behavior: smooth; }
 
@@ -80,6 +101,17 @@ button { font-family: inherit; cursor: pointer; }
 }
 .salto-contenido:focus { left: .5rem; top: .5rem; }
 
+/* ─── 00 · ICONOS ────────────────────────────────────────────────────── */
+/* El sprite vive dentro de index.html pero no debe ocupar sitio. */
+.kz-iconos { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Iconos de interfaz: heredan el color del texto y se alinean con él. */
+.ico {
+  width: 1.15em; height: 1.15em;
+  flex: 0 0 auto; display: inline-block;
+  vertical-align: -.16em;
+}
+
 /* ─── 01 · CABECERA ──────────────────────────────────────────────────── */
 .cabecera {
   position: sticky; top: 0; z-index: 60;
@@ -94,9 +126,8 @@ button { font-family: inherit; cursor: pointer; }
 .cabecera__marca { display: flex; align-items: center; text-decoration: none; }
 .cabecera__placa {
   display: block;
-  /* El logo real es un JPEG con fondo blanco puro (medido: 255,255,255 en las
-     cuatro esquinas), así que la placa también es blanca: así el logo no se ve
-     como un recuadro con reborde sobre el carbón. */
+  /* El logo real es un JPEG con fondo blanco puro, así que la placa también es
+     blanca: el logo no se ve como un recuadro con reborde sobre el carbón. */
   background: #fff;
   border-radius: 12px;
   padding: 3px;
@@ -106,28 +137,32 @@ button { font-family: inherit; cursor: pointer; }
 
 .cabecera__nav {
   display: none;
-  gap: 1.4rem;
+  gap: .4rem;
   margin-left: auto;
   font-size: .84rem; font-weight: 800;
   text-transform: uppercase; letter-spacing: .05em;
 }
-.cabecera__nav a { color: var(--crema); text-decoration: none; padding: .35rem 0; border-bottom: 2px solid transparent; }
+.cabecera__nav a {
+  display: inline-flex; align-items: center;
+  min-height: 44px; padding: .35rem .5rem;
+  color: var(--crema); text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
 .cabecera__nav a:hover { color: var(--amarillo); border-bottom-color: var(--amarillo); }
 
 .cabecera__carrito {
   margin-left: auto;
-  position: relative;
   display: inline-flex; align-items: center; gap: .45rem;
   background: var(--amarillo); color: var(--carbon);
   border: 0; border-radius: 999px;
-  padding: .5rem .9rem;
+  padding: .5rem .95rem;
   font-weight: 800; font-size: .82rem;
   min-height: 44px;
 }
 .cabecera__nav + .cabecera__carrito { margin-left: 1rem; }
 .cabecera__cuenta {
   display: inline-grid; place-items: center;
-  min-width: 1.35rem; height: 1.35rem; padding: 0 .3rem;
+  min-width: 1.4rem; height: 1.4rem; padding: 0 .3rem;
   border-radius: 999px;
   background: var(--rojo); color: var(--crema);
   font-size: .72rem; font-weight: 800;
@@ -137,6 +172,7 @@ button { font-family: inherit; cursor: pointer; }
 .hero {
   position: relative;
   overflow: hidden;
+  scroll-margin-top: calc(var(--cabecera) + .6rem);
   padding-block: clamp(1.8rem, 4vw, 3.4rem) clamp(2rem, 4.5vw, 3.8rem);
   background:
     radial-gradient(120% 90% at 80% 0%, rgb(255 201 40 / .28), transparent 55%),
@@ -194,13 +230,14 @@ button { font-family: inherit; cursor: pointer; }
   margin: 0 0 1.4rem; padding: 0; list-style: none;
 }
 .hero__insignias li {
-  display: inline-flex; align-items: center; gap: .4rem;
+  display: inline-flex; align-items: center; gap: .45rem;
   background: rgb(36 36 36 / .42);
   border: 1px solid rgb(255 248 233 / .28);
   border-radius: 999px;
   padding: .35rem .8rem;
   font-size: .78rem; font-weight: 700;
 }
+.hero__insignias .ico { color: var(--amarillo); width: 1.15rem; height: 1.15rem; }
 
 .hero__acciones { display: grid; gap: .6rem; max-width: 30rem; }
 
@@ -262,7 +299,10 @@ button { font-family: inherit; cursor: pointer; }
 .btn__icono { width: 1.15em; height: 1.15em; flex: 0 0 auto; }
 
 /* ─── 04 · MENÚ ──────────────────────────────────────────────────────── */
-.menu { padding-block: 1.6rem 1.2rem; }
+.menu {
+  scroll-margin-top: calc(var(--cabecera) + .6rem);
+  padding-block: 1.6rem 1.2rem;
+}
 
 .menu__cabeza { text-align: center; margin-bottom: 1.1rem; }
 .menu__titulo {
@@ -272,31 +312,42 @@ button { font-family: inherit; cursor: pointer; }
   text-transform: uppercase;
   color: var(--rojo);
 }
-.menu__nota { margin: 0 auto; max-width: 62ch; font-size: .86rem; color: var(--tinta-tenue); }
+.menu__nota { margin: 0 auto; max-width: 62ch; font-size: .88rem; color: var(--tinta-tenue); }
 
+/* Chips = navegación por anclas a cada categoría (no son filtros).
+   Altura fija para que scroll-margin-top y la cabecera encajen exactos. */
 .chips {
   position: sticky; top: var(--cabecera); z-index: 40;
-  display: flex; gap: .45rem;
-  overflow-x: auto; scrollbar-width: none;
-  padding: .6rem 0;
-  margin-bottom: .9rem;
-  background: rgb(255 248 233 / .96);
+  display: flex; align-items: center; gap: .5rem;
+  height: var(--alto-chips);
+  overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  padding-inline: 2px;
+  margin-bottom: 1rem;
+  background: rgb(255 248 233 / .97);
   backdrop-filter: blur(6px);
 }
 .chips::-webkit-scrollbar { display: none; }
 .chip {
   flex: 0 0 auto;
+  display: inline-flex; align-items: center;
   border: 2px solid var(--rojo);
   background: transparent; color: var(--rojo);
   border-radius: 999px;
-  padding: .45rem .95rem;
+  padding: 0 1rem;
+  min-height: 44px;
   font-size: .76rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em;
-  min-height: 40px;
+  text-decoration: none;
   transition: background .2s, color .2s;
 }
 .chip[aria-current="true"], .chip:hover { background: var(--rojo); color: var(--crema); }
 
-.categoria { scroll-margin-top: calc(var(--cabecera) + 3.6rem); margin-bottom: 1.8rem; }
+/* El título de la sección tiene que quedar debajo de la cabecera Y de los chips. */
+.categoria {
+  scroll-margin-top: calc(var(--cabecera) + var(--alto-chips) + .6rem);
+  margin-bottom: 1.8rem;
+}
 .categoria__titulo {
   display: flex; align-items: center; gap: .7rem;
   margin: 0 0 .85rem;
@@ -310,82 +361,121 @@ button { font-family: inherit; cursor: pointer; }
   background: linear-gradient(90deg, var(--amarillo), transparent);
 }
 
-.platillos { display: grid; gap: .7rem; grid-template-columns: 1fr; }
+/* Columnas según el espacio REAL: `auto-fit` con mínimo de 272 px. Nunca se
+   fuerza una columna en la que el nombre o los botones no quepan. */
+.platillos {
+  display: grid;
+  gap: .8rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 272px), 1fr));
+}
 
+/* ─── TARJETA DE PRODUCTO ────────────────────────────────────────────── */
+/* Dos filas: icono + texto arriba, controles en su propia fila. Así el nombre
+   dispone de todo el ancho y no compite con los botones. */
 .platillo {
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: .8rem;
-  align-items: center;
+  grid-template-columns: var(--icono-plato) minmax(0, 1fr);
+  grid-template-areas:
+    "icono cuerpo"
+    "accion accion";
+  gap: .55rem .8rem;
+  align-items: start;
   background: #fff;
   border: 1px solid rgb(36 36 36 / .10);
   border-radius: var(--radio);
-  padding: .75rem .85rem;
+  padding: .85rem .9rem .9rem;
   box-shadow: 0 4px 14px rgb(36 36 36 / .06);
   transition: box-shadow .22s, border-color .22s;
 }
 .platillo:hover { box-shadow: var(--sombra); border-color: rgb(255 122 24 / .5); }
 
+/* Placa del icono: mismo tamaño para todos, con la ilustración centrada. */
 .platillo__icono {
-  width: 3rem; height: 3rem; flex: 0 0 auto;
+  grid-area: icono;
+  width: var(--icono-plato); height: var(--icono-plato);
   display: grid; place-items: center;
-  border-radius: 14px; font-size: 1.5rem;
-  background: linear-gradient(150deg, rgb(255 201 40 / .35), rgb(255 122 24 / .28));
-  border: 1px solid rgb(255 122 24 / .35);
+  border-radius: 16px;
+  background: linear-gradient(150deg, rgb(255 201 40 / .30), rgb(255 122 24 / .20));
+  border: 1px solid rgb(255 122 24 / .26);
+  padding: 6px;
 }
-.platillo__cuerpo { min-width: 0; }
+.platillo__icono svg { width: 100%; height: 100%; display: block; }
+
+.platillo__cuerpo { grid-area: cuerpo; min-width: 0; }
+
 .platillo__nombre {
   margin: 0;
-  font-family: var(--fuente-titulo);
-  font-size: .95rem; line-height: 1.2;
+  font-family: var(--fuente-texto);
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 1.25;
+  letter-spacing: -.01em;
   color: var(--carbon);
+  overflow-wrap: break-word;
 }
-.platillo__variantes { display: flex; flex-wrap: wrap; gap: .3rem; margin: .4rem 0 0; padding: 0; list-style: none; }
-.platillo__variantes li { margin: 0; }
+
+.platillo__variantes { display: flex; flex-wrap: wrap; gap: .35rem; margin: .5rem 0 0; padding: 0; list-style: none; }
+.platillo__variantes li { margin: 0; display: flex; }
 .platillo__variantes button {
+  display: inline-flex; align-items: center; justify-content: center;
   border: 1.5px solid rgb(201 31 50 / .45);
   background: transparent; color: var(--rojo);
   border-radius: 999px;
-  padding: .18rem .6rem; min-height: 28px;
-  font-family: inherit; font-size: .7rem; font-weight: 800;
+  padding: 0 .85rem; min-height: 44px;
+  font-family: inherit; font-size: .76rem; font-weight: 800;
   transition: background .18s, color .18s, border-color .18s;
 }
 .platillo__variantes button:hover { border-color: var(--rojo); background: rgb(201 31 50 / .08); }
 .platillo__variantes button[aria-pressed="true"] { background: var(--rojo); border-color: var(--rojo); color: var(--crema); }
 
+/* Precio: sin cifras inventadas. Un punto cálido en vez del emoji de etiqueta. */
 .platillo__precio {
-  margin: .35rem 0 0;
-  display: inline-flex; align-items: center; gap: .3rem;
-  font-size: .78rem; font-weight: 800;
+  margin: .5rem 0 0;
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .8rem; font-weight: 800;
   color: var(--tinta-tenue);
 }
-.platillo__precio::before { content: "🏷️"; font-size: .85em; }
+.platillo__precio::before {
+  content: "";
+  width: .5rem; height: .5rem; border-radius: 50%;
+  flex: 0 0 auto;
+  background: var(--amarillo);
+  box-shadow: 0 0 0 2px rgb(255 201 40 / .26);
+}
 
-.platillo__accion { display: flex; align-items: center; gap: .4rem; }
+.platillo__accion {
+  grid-area: accion;
+  display: flex; align-items: center; justify-content: flex-end; gap: .5rem;
+  min-height: 44px;
+}
 
 .agregar {
-  display: inline-flex; align-items: center; justify-content: center; gap: .3rem;
+  display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
   min-height: 44px; min-width: 44px;
-  padding: .4rem .85rem;
+  padding: .5rem 1.15rem;
   border: 0; border-radius: 999px;
   background: var(--rojo); color: var(--crema);
-  font-weight: 800; font-size: .8rem;
+  font-weight: 800; font-size: .82rem;
   transition: background .2s, transform .18s;
 }
 .agregar:hover { background: var(--naranja); }
 .agregar:active { transform: scale(.96); }
 
-.stepper { display: inline-flex; align-items: center; gap: .15rem; background: rgb(201 31 50 / .08); border-radius: 999px; padding: .15rem; }
+.stepper {
+  display: inline-flex; align-items: center; gap: .1rem;
+  background: rgb(201 31 50 / .08);
+  border-radius: 999px; padding: .18rem;
+}
 .stepper button {
-  width: 2.2rem; height: 2.2rem;
+  width: 44px; height: 44px;
   display: grid; place-items: center;
   border: 0; border-radius: 50%;
   background: var(--rojo); color: var(--crema);
-  font-size: 1.05rem; font-weight: 800; line-height: 1;
+  font-size: 1.15rem; font-weight: 800; line-height: 1;
 }
 .stepper button:hover { background: var(--naranja); }
-.stepper button[data-accion="quitar"] { background: transparent; color: var(--rojo); font-size: .95rem; }
-.stepper span { min-width: 1.4rem; text-align: center; font-weight: 800; font-size: .9rem; }
+.stepper button[data-accion="quitar"] { background: transparent; color: var(--rojo); }
+.stepper span { min-width: 1.5rem; text-align: center; font-weight: 800; font-size: .95rem; }
 
 /* ─── 05 · BARRA DE PEDIDO ───────────────────────────────────────────── */
 .barra-pedido {
@@ -400,7 +490,7 @@ button { font-family: inherit; cursor: pointer; }
 .barra-pedido.visible { display: flex; }
 .barra-pedido__info { margin-right: auto; color: var(--crema); font-size: .82rem; line-height: 1.25; }
 .barra-pedido__info strong { display: block; font-size: .92rem; }
-.barra-pedido__info span { color: rgb(255 248 233 / .7); }
+.barra-pedido__info span { color: rgb(255 248 233 / .82); }
 .barra-pedido .btn { min-height: 46px; padding: .6rem 1rem; font-size: .82rem; }
 
 /* ─── 06 · PANEL DEL CARRITO ─────────────────────────────────────────── */
@@ -422,9 +512,16 @@ button { font-family: inherit; cursor: pointer; }
   border-radius: 22px 22px 0 0;
   box-shadow: var(--sombra-fuerte);
   transform: translateY(102%);
-  transition: transform .3s cubic-bezier(.16, 1, .3, 1);
+  /* visibility oculta el panel al tabulador mientras está cerrado; se retrasa
+     para no cortar la animación de salida. */
+  visibility: hidden;
+  transition: transform .3s cubic-bezier(.16, 1, .3, 1), visibility 0s linear .3s;
 }
-.carrito.abierto { transform: translateY(0); }
+.carrito.abierto {
+  transform: translateY(0);
+  visibility: visible;
+  transition: transform .3s cubic-bezier(.16, 1, .3, 1), visibility 0s linear 0s;
+}
 
 .carrito__cabeza {
   display: flex; align-items: center; gap: .7rem;
@@ -437,18 +534,19 @@ button { font-family: inherit; cursor: pointer; }
   text-transform: uppercase; color: var(--rojo);
 }
 .carrito__cerrar {
-  width: 2.5rem; height: 2.5rem;
+  width: 44px; height: 44px;
   display: grid; place-items: center;
   border: 2px solid rgb(36 36 36 / .15); border-radius: 50%;
   background: transparent; color: var(--carbon);
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 .carrito__cerrar:hover { border-color: var(--rojo); color: var(--rojo); }
 
 .carrito__cuerpo { overflow-y: auto; padding: .8rem 5%; -webkit-overflow-scrolling: touch; }
 
 .carrito__vacio { text-align: center; padding: 2rem .5rem; color: var(--tinta-tenue); font-size: .9rem; }
-.carrito__vacio span { display: block; font-size: 2rem; margin-bottom: .4rem; }
+.carrito__vacio-icono { display: block; width: 64px; height: 64px; margin: 0 auto .6rem; }
+.carrito__vacio-icono svg { width: 100%; height: 100%; display: block; }
 
 .linea {
   display: grid;
@@ -458,16 +556,16 @@ button { font-family: inherit; cursor: pointer; }
   border-bottom: 1px dashed rgb(36 36 36 / .15);
 }
 .linea__nombre { margin: 0; font-weight: 800; font-size: .9rem; }
-.linea__variante { margin: .1rem 0 0; font-size: .74rem; color: var(--rojo); font-weight: 700; }
+.linea__variante { margin: .1rem 0 0; font-size: .76rem; color: var(--rojo); font-weight: 700; }
 .linea__quitar {
   align-self: start;
-  width: 2rem; height: 2rem;
+  width: 44px; height: 44px;
   display: grid; place-items: center;
   border: 0; border-radius: 50%;
   background: rgb(201 31 50 / .08); color: var(--rojo);
-  font-size: .95rem;
 }
 .linea__quitar:hover { background: rgb(201 31 50 / .18); }
+.linea__quitar .ico { width: 1.15rem; height: 1.15rem; }
 .linea__obs {
   grid-column: 1 / -1;
   width: 100%;
@@ -475,7 +573,7 @@ button { font-family: inherit; cursor: pointer; }
   border: 1px solid rgb(36 36 36 / .18); border-radius: var(--radio-sm);
   background: #fff; color: var(--carbon);
   font-family: inherit; font-size: .82rem;
-  min-height: 42px;
+  min-height: 44px;
 }
 .linea__obs::placeholder { color: #9A8F86; }
 .linea__obs:focus-visible { outline: 3px solid var(--rojo); outline-offset: 1px; }
@@ -491,7 +589,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 .campo input:focus-visible { outline: 3px solid var(--rojo); outline-offset: 1px; }
 
-.carrito__aviso { margin: .7rem 0 0; font-size: .76rem; color: var(--tinta-tenue); }
+.carrito__aviso { margin: .7rem 0 0; font-size: .78rem; color: var(--tinta-tenue); }
 
 .carrito__pie {
   padding: .8rem 5% calc(.9rem + env(safe-area-inset-bottom));
@@ -511,7 +609,7 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--tinta-tenue);
   font-family: inherit; font-size: .78rem; font-weight: 700;
   text-decoration: underline; text-underline-offset: 3px;
-  padding: .45rem .6rem; min-height: 40px;
+  padding: .45rem .6rem; min-height: 44px;
 }
 .carrito__vaciar:hover { color: var(--rojo); }
 
@@ -549,11 +647,15 @@ button { font-family: inherit; cursor: pointer; }
   box-shadow: 0 8px 20px rgb(0 0 0 / .35);
 }
 .pie__placa img { width: 100%; height: auto; border-radius: 11px; }
-.pie__datos { margin: .9rem 0 0; padding: 0; list-style: none; display: grid; gap: .45rem; font-size: .88rem; color: rgb(255 248 233 / .88); }
+.pie__datos { margin: .9rem 0 0; padding: 0; list-style: none; display: grid; gap: .5rem; font-size: .88rem; color: rgb(255 248 233 / .88); }
+.pie__datos li { display: flex; align-items: flex-start; gap: .5rem; }
+.pie__datos .ico { color: var(--amarillo); width: 1.2rem; height: 1.2rem; margin-top: .12rem; }
 .pie__datos a { color: var(--amarillo); text-decoration: none; font-weight: 700; }
 .pie__acciones { display: flex; flex-wrap: wrap; gap: .5rem; align-content: start; }
 .pie__acciones .btn { min-height: 48px; padding: .6rem 1.1rem; font-size: .8rem; }
-.pie__legal { flex-basis: 100%; margin: .4rem 0 0; font-size: .74rem; color: rgb(255 248 233 / .6); }
+.pie__legal { flex-basis: 100%; margin: .4rem 0 0; font-size: .76rem; color: rgb(255 248 233 / .78); line-height: 1.6; }
+.pie__legal a { color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.pie__legal a:hover { color: var(--amarillo); }
 
 /* ─── 09 · AVISO FLOTANTE ────────────────────────────────────────────── */
 .toast {
@@ -574,14 +676,13 @@ button { font-family: inherit; cursor: pointer; }
 
 /* ─── 10 · TABLETA ───────────────────────────────────────────────────── */
 @media (min-width: 720px) {
-  .platillos { grid-template-columns: 1fr 1fr; }
   .pie__interior { grid-template-columns: 1fr auto; align-items: center; }
   .pie__acciones { justify-content: flex-end; }
 }
 
 /* ─── 11 · ESCRITORIO ────────────────────────────────────────────────── */
 @media (min-width: 1024px) {
-  :root { --cabecera: 78px; --barra-pedido: 0px; }
+  :root { --cabecera: 78px; --barra-pedido: 0px; --alto-chips: 64px; }
   body { padding-bottom: 0; }
 
   .cabecera { padding-inline: 5%; }
@@ -595,7 +696,6 @@ button { font-family: inherit; cursor: pointer; }
   .hero__placa { width: min(380px, 34vw); }
 
   .menu { padding-block: 2.2rem 1.6rem; }
-  .platillos { grid-template-columns: repeat(3, 1fr); gap: .9rem; }
 
   /* Carrrito lateral derecho */
   .carrito {
@@ -615,9 +715,8 @@ button { font-family: inherit; cursor: pointer; }
   .toast { bottom: 2rem; }
 }
 
-/* ─── 12 · PANTALLAS GRANDES: cuatro columnas de menú ────────────────── */
+/* ─── 12 · PANTALLAS GRANDES ─────────────────────────────────────────── */
 @media (min-width: 1440px) {
-  .platillos { grid-template-columns: repeat(4, 1fr); }
   .hero__placa { width: min(420px, 32vw); }
   .hero__slogan { font-size: clamp(2.4rem, 3.4vw, 3.6rem); }
 }

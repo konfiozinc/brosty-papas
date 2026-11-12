@@ -290,7 +290,9 @@
                 '<button type="button" data-accion="sumar" aria-label="Añadir otro ' + nombre + '">+</button>' +
               '</span>' +
             '</div>' +
-            '<button class="linea__quitar" type="button" data-accion="eliminar" aria-label="Eliminar ' + nombre + ' del pedido">🗑</button>' +
+            '<button class="linea__quitar" type="button" data-accion="eliminar" aria-label="Eliminar ' + nombre + ' del pedido">' +
+              '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-papelera"/></svg>' +
+            '</button>' +
             '<input class="linea__obs" type="text" maxlength="140" value="' + esc(l.obs) + '" ' +
               'placeholder="Observaciones: sin salsa, bien asado…" aria-label="Observaciones para ' + nombre + '">' +
           '</div>';
@@ -354,7 +356,7 @@
 
   /* ───────── mensaje y envío por WhatsApp ───────── */
   function armarMensaje() {
-    var lineas = ['Hola BROSTY PAPAS 🍗, quiero hacer este pedido:'];
+    var lineas = ['Hola BROSTY PAPAS, quiero hacer este pedido:'];
     pedido.lineas.forEach(function (l) {
       var detalle = l.nombre + (l.variante ? ' (' + l.variante + ')' : '');
       lineas.push('• ' + l.cantidad + '× ' + detalle + ' — Consultar precio');
@@ -451,7 +453,7 @@
       var url = window.location.href.split('#')[0];
       if (navigator.share) {
         navigator.share({ title: 'BROSTY PAPAS', text: '¡El sabor que provoca repetir! Pollo broaster y asado.', url: url })
-          .then(function () { avisar('Gracias por compartir 🍗'); })
+          .then(function () { avisar('Gracias por compartir.'); })
           .catch(function () { /* cancelado: sin ruido */ });
       } else if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(url).then(function () {
@@ -466,21 +468,80 @@
   }
 
   /* ───────── chips de categoría: marcar el que se está viendo ───────── */
+  /* Los chips son NAVEGACIÓN POR ANCLAS, no filtros. El chip activo se calcula
+     por posición: es el de la última categoría que ya pasó por debajo de las
+     barras fijas. Antes se usaba una banda de intersección de apenas 5 % de la
+     pantalla, y en las categorías cortas marcaba la categoría siguiente (al
+     pulsar «Pollo asado» se marcaba «Comidas rápidas»), además de dejar
+     «Combos» marcado cuando se estaba en la portada. */
   var chips = $$('.chip');
-  if (chips.length && 'IntersectionObserver' in window) {
-    var observador = new IntersectionObserver(function (entradas) {
-      entradas.forEach(function (entrada) {
-        if (!entrada.isIntersecting) return;
-        var id = entrada.target.getAttribute('id');
-        chips.forEach(function (chip) {
-          chip.setAttribute('aria-current', String(chip.getAttribute('href') === '#' + id));
-        });
+  var secciones = $$('.categoria');
+
+  /* Alto que ocupan las barras fijas cuando están pegadas arriba. Se usan las
+     ALTURAS, no la posición actual: en la portada los chips todavía no están
+     pegados y su borde inferior puede estar cientos de píxeles más abajo, con
+     lo que todo contaría como «ya pasado» y se marcaría «Combos» sin estarlo. */
+  function limiteDeBarras() {
+    var cabecera = $('.cabecera');
+    var fila = $('.chips');
+    return (cabecera ? cabecera.offsetHeight : 0) + (fila ? fila.offsetHeight : 0);
+  }
+
+  function marcarChip() {
+    if (!chips.length || !secciones.length) return;
+    /* Un poco de holgura: al pulsar un chip, `scroll-margin-top` deja el título
+       unos 10 px por debajo de las barras. Sin esa holgura la categoría recién
+       abierta quedaba «por debajo» del límite y se marcaba la anterior. */
+    var limite = limiteDeBarras() + 24;
+    var activa = '';
+    secciones.forEach(function (seccion) {
+      if (seccion.getBoundingClientRect().top <= limite) activa = seccion.getAttribute('id');
+    });
+    var fila = $('.chips');
+    chips.forEach(function (chip) {
+      var esActivo = chip.getAttribute('href') === '#' + activa;
+      chip.setAttribute('aria-current', String(esActivo));
+      /* En móvil la fila de chips se desplaza en horizontal: el activo debe
+         quedar a la vista. Se mueve solo la fila, nunca la página. */
+      if (esActivo && fila && fila.scrollWidth > fila.clientWidth) {
+        var destino = chip.offsetLeft - (fila.clientWidth - chip.offsetWidth) / 2;
+        fila.scrollLeft = Math.max(0, destino);
+      }
+    });
+  }
+
+  if (chips.length) {
+    var turnoPendiente = false;
+    var alDesplazar = function () {
+      if (turnoPendiente) return;
+      turnoPendiente = true;
+      window.requestAnimationFrame(function () { turnoPendiente = false; marcarChip(); });
+    };
+    window.addEventListener('scroll', alDesplazar, { passive: true });
+    window.addEventListener('resize', alDesplazar);
+    marcarChip();
+  }
+
+  /* Al volver a la página, la tarjeta debe recordar qué variante se pidió.
+     Sin esto, un pedido con «Patacón (Mixto)» reaparecía con «Pollo» marcado y
+     el contador a 0, aunque el carrito sí tuviera la línea guardada. */
+  function sincronizarVariantes() {
+    tarjetas.forEach(function (tarjeta) {
+      var id = tarjeta.getAttribute('data-id');
+      var guardadas = pedido.lineas.filter(function (l) { return l.id === id; });
+      if (!guardadas.length) return;
+      var elegida = varianteElegida(tarjeta);
+      var yaEsta = guardadas.some(function (l) { return l.variante === elegida; });
+      if (yaEsta) return;
+      var mejor = guardadas.slice().sort(function (a, b) { return b.cantidad - a.cantidad; })[0];
+      $$('.variante', tarjeta).forEach(function (boton) {
+        boton.setAttribute('aria-pressed', String(boton.getAttribute('data-variante') === mejor.variante));
       });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    $$('.categoria').forEach(function (seccion) { observador.observe(seccion); });
+    });
   }
 
   /* ───────── arranque ───────── */
   leer();
+  sincronizarVariantes();
   pintar();
 })();

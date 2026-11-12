@@ -27,6 +27,7 @@ exclude:
   # Interno de KONFÍO ZINC / del proyecto: nunca se sirve
   - herramientas
   - evidencias
+  - docs
   - LEEME-REVISION.txt
   - README.md
   - .gitignore

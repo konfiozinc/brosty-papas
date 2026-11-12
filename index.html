@@ -31,6 +31,44 @@
 </head>
 <body>
 
+<!-- ══════════════════ ICONOS (SVG propio, sin emojis del sistema) ══════════════════
+     Un solo bloque de símbolos, reutilizado con <use>: no hay peticiones extra y
+     el navegador lo descarga una vez. Paleta del volante: crema #FFF8E9 ·
+     amarillo #FFC928 · naranja #FF7A18 · rojo #C91F32 · carbón #242424.
+     Los de producto se dibujan sobre un lienzo de 64; los de interfaz, sobre 24
+     con trazo de 2 px para que se lean nítidos a tamaño pequeño. -->
+<!-- KZ-ICONOS:INICIO -->
+  <!-- Generado por herramientas/generar-iconos.mjs desde assets/img/iconos/*.svg.
+       No editar a mano: se sobrescribe. Para cambiar un icono, edita su SVG y
+       vuelve a ejecutar el generador. -->
+  <svg class="kz-iconos" aria-hidden="true" focusable="false" width="0" height="0">
+    <defs>
+    <symbol id="i-combo-apanado" viewBox="0 0 64 64"><ellipse cx="32" cy="57.5" rx="19" ry="3.6" fill="#8E1222" opacity=".15"/><g fill="#FFC928"><rect x="17" y="11" width="5.6" height="19" rx="2.8" transform="rotate(-14 20 20)"/><rect x="24" y="8" width="5.6" height="22" rx="2.8"/><rect x="31" y="11" width="5.6" height="19" rx="2.8" transform="rotate(7 34 20)"/></g><path d="M36 28.5c0-6 4.5-11 10-11.6 4.6-.5 8 2.6 8 7.4 0 5.6-4.4 10.6-9.8 11.4-4.6.7-8.2-2.4-8.2-7.2z" fill="#E8A900"/><g fill="#C98A00" opacity=".55"><circle cx="41" cy="24" r="1.4"/><circle cx="46" cy="21" r="1.4"/><circle cx="49" cy="26" r="1.4"/><circle cx="44" cy="30" r="1.4"/><circle cx="50" cy="31" r="1.4"/></g><path d="M12 26h40l-5 24.5a4 4 0 0 1-4 3.5H21a4 4 0 0 1-4-3.5z" fill="#C91F32"/><path d="M12 26h40l-1.8 8.4H13.8z" fill="#8E1222"/><rect x="25" y="40" width="14" height="8" rx="4" fill="#FFF8E9"/></symbol>
+    <symbol id="i-combo-ala" viewBox="0 0 64 64"><ellipse cx="32" cy="57.5" rx="19" ry="3.6" fill="#8E1222" opacity=".15"/><g fill="#FFC928"><rect x="15" y="11" width="5.6" height="19" rx="2.8" transform="rotate(-15 18 20)"/><rect x="22" y="8" width="5.6" height="22" rx="2.8"/><rect x="29" y="12" width="5.6" height="18" rx="2.8" transform="rotate(9 32 21)"/></g><path d="M33 27.5c.8-6.4 5.4-11.4 11-12.4 3.7-.7 6.7 1.2 6.7 4.6 0 4.2-3.1 7.4-7.3 8.9-3.4 1.2-6.7.9-10.4-1.1z" fill="#FF7A18"/><path d="M38 22.5c2-3.1 5-5.2 8-5.9" fill="none" stroke="#E8A900" stroke-width="2.6" stroke-linecap="round" opacity=".75"/><path d="M12 26h40l-5 24.5a4 4 0 0 1-4 3.5H21a4 4 0 0 1-4-3.5z" fill="#C91F32"/><path d="M12 26h40l-1.8 8.4H13.8z" fill="#8E1222"/><rect x="25" y="40" width="14" height="8" rx="4" fill="#FFF8E9"/></symbol>
+    <symbol id="i-pollo-entero" viewBox="0 0 64 64"><ellipse cx="32" cy="55" rx="22" ry="4.4" fill="#8E1222" opacity=".15"/><path d="M17 44c-4 2-6.5 6-4.5 8.8S19 53.5 21.5 50z" fill="#D95E00"/><path d="M47 44c4 2 6.5 6 4.5 8.8S45 53.5 42.5 50z" fill="#D95E00"/><ellipse cx="32" cy="30" rx="19" ry="15" fill="#FF7A18"/><ellipse cx="32" cy="27.5" rx="14" ry="10" fill="#E8A900" opacity=".55"/><ellipse cx="25.5" cy="21.5" rx="5.4" ry="3" fill="#FFF8E9" opacity=".78" transform="rotate(-22 25.5 21.5)"/><path d="M20 36c4 3.4 9 4.6 13 3.6" fill="none" stroke="#C91F32" stroke-width="2.4" stroke-linecap="round" opacity=".4"/></symbol>
+    <symbol id="i-medio-pollo" viewBox="0 0 64 64"><ellipse cx="32" cy="55" rx="17" ry="4" fill="#8E1222" opacity=".15"/><g transform="rotate(-28 32 32)"><rect x="9" y="29.5" width="15" height="6" rx="3" fill="#FFF8E9"/><circle cx="10" cy="32.5" r="5.4" fill="#FFF8E9"/><ellipse cx="37" cy="32.5" rx="15" ry="12.5" fill="#FF7A18"/><ellipse cx="34" cy="28" rx="7.4" ry="4.6" fill="#E8A900" opacity=".6"/><path d="M28 24.5c3-2.4 7-3.4 10-3.2" fill="none" stroke="#FFF8E9" stroke-width="2.4" stroke-linecap="round" opacity=".7"/></g></symbol>
+    <symbol id="i-salchipapas" viewBox="0 0 64 64"><ellipse cx="32" cy="56.5" rx="18" ry="3.6" fill="#8E1222" opacity=".15"/><g fill="#FFC928"><rect x="17" y="9" width="5.8" height="21" rx="2.9" transform="rotate(-12 20 19)"/><rect x="25" y="6" width="5.8" height="24" rx="2.9"/><rect x="33" y="7" width="5.8" height="23" rx="2.9" transform="rotate(5 36 18)"/><rect x="41" y="10" width="5.8" height="20" rx="2.9" transform="rotate(13 44 20)"/></g><path d="M13 27h38l-4.4 22a4.5 4.5 0 0 1-4.4 3.6H21.8a4.5 4.5 0 0 1-4.4-3.6z" fill="#C91F32"/><rect x="12.4" y="26" width="39.2" height="6.4" rx="3.2" fill="#8E1222"/><g fill="#FF7A18"><circle cx="23.5" cy="32.5" r="5.6"/><circle cx="32.5" cy="35" r="5.6"/><circle cx="41.5" cy="32.5" r="5.6"/></g><g fill="#E85B2B" opacity=".45"><circle cx="23.5" cy="32.5" r="2.4"/><circle cx="32.5" cy="35" r="2.4"/><circle cx="41.5" cy="32.5" r="2.4"/></g></symbol>
+    <symbol id="i-desgranado" viewBox="0 0 64 64"><ellipse cx="32" cy="56" rx="16" ry="3.4" fill="#8E1222" opacity=".15"/><g fill="#FFC928"><circle cx="24" cy="21" r="4.6"/><circle cx="32" cy="16.5" r="4.6"/><circle cx="40" cy="21" r="4.6"/><circle cx="28" cy="26" r="4.2"/><circle cx="36" cy="26" r="4.2"/><circle cx="32" cy="22" r="4.2"/></g><g fill="#E8A900" opacity=".5"><circle cx="23" cy="23.5" r="1.5"/><circle cx="33" cy="18" r="1.5"/><circle cx="41" cy="23.5" r="1.5"/></g><path d="M15 25h34l-4.2 24.5a5 5 0 0 1-5 4.5H24.2a5 5 0 0 1-5-4.5z" fill="#FFF8E9"/><path d="M17.2 31h29.6l-1.4 8H18.6z" fill="#FFC928"/><path d="M21 44h22" stroke="#C91F32" stroke-width="3.6" stroke-linecap="round"/><path d="M24.5 50h15" stroke="#FF7A18" stroke-width="3.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-patacon" viewBox="0 0 64 64"><ellipse cx="32" cy="53" rx="21" ry="4" fill="#8E1222" opacity=".15"/><ellipse cx="32" cy="40" rx="21" ry="11" fill="#D95E00"/><ellipse cx="32" cy="34" rx="21" ry="12" fill="#FFC928"/><ellipse cx="32" cy="32" rx="13" ry="6.6" fill="#FF7A18"/><g fill="#C91F32"><circle cx="26" cy="30" r="2.6"/><circle cx="34" cy="33" r="2.6"/><circle cx="39" cy="29" r="2.2"/></g><path d="M18 24c4.5-3.4 9.5-5 13-5" fill="none" stroke="#FFF8E9" stroke-width="3" stroke-linecap="round" opacity=".7"/></symbol>
+    <symbol id="i-hamburguesa" viewBox="0 0 64 64"><ellipse cx="32" cy="55" rx="21" ry="4" fill="#8E1222" opacity=".15"/><path d="M8 27a24 18 0 0 1 48 0z" fill="#FFC928"/><g fill="#FFF8E9" opacity=".9"><circle cx="20" cy="19" r="1.8"/><circle cx="32" cy="14.5" r="1.8"/><circle cx="44" cy="19" r="1.8"/></g><rect x="9" y="26" width="46" height="4.6" rx="2.3" fill="#FFF8E9"/><circle cx="17" cy="33" r="3.2" fill="#FFF8E9"/><circle cx="33" cy="34" r="3.6" fill="#FFF8E9"/><circle cx="47" cy="33" r="3.2" fill="#FFF8E9"/><rect x="10" y="32" width="44" height="9" rx="4.5" fill="#C91F32"/><path d="M9 42h46v3.5a7 7 0 0 1-7 7H16a7 7 0 0 1-7-7z" fill="#FF7A18"/><path d="M14 46h36" stroke="#E8A900" stroke-width="2.4" stroke-linecap="round" opacity=".5"/></symbol>
+    <symbol id="i-perros" viewBox="0 0 64 64"><ellipse cx="32" cy="52" rx="22" ry="3.8" fill="#8E1222" opacity=".15"/><path d="M9 33c0-7 6-12 13-12h20c7 0 13 5 13 12s-6 12-13 12H22C15 45 9 40 9 33z" fill="#FFC928"/><path d="M13 22.5c4.5-3.2 11-4.5 19-4.5s14.5 1.3 19 4.5" fill="none" stroke="#E8A900" stroke-width="2.6" stroke-linecap="round" opacity=".5"/><rect x="11.5" y="28" width="41" height="9.5" rx="4.75" fill="#C91F32"/><path d="M17 33h3.4l2.8-3.6 2.8 3.6H30l2.8-3.6 2.8 3.6h3.4l2.8-3.6 2.8 3.6" fill="none" stroke="#FFC928" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chuzos" viewBox="0 0 64 64"><ellipse cx="32" cy="55" rx="18" ry="3.6" fill="#8E1222" opacity=".15"/><g transform="rotate(-38 32 32)"><rect x="5" y="30.4" width="54" height="3.4" rx="1.7" fill="#D95E00"/><rect x="13" y="24" width="11.5" height="16" rx="4" fill="#FF7A18"/><rect x="26.5" y="22" width="11.5" height="20" rx="4" fill="#C91F32"/><rect x="40" y="24" width="11.5" height="16" rx="4" fill="#FF7A18"/><g fill="#E8A900" opacity=".55"><rect x="16" y="28" width="3" height="8" rx="1.5"/><rect x="30" y="26" width="3" height="12" rx="1.5"/><rect x="44" y="28" width="3" height="8" rx="1.5"/></g></g></symbol>
+    <symbol id="i-picadas" viewBox="0 0 64 64"><ellipse cx="32" cy="55" rx="23" ry="3.8" fill="#8E1222" opacity=".15"/><path d="M14 26c0-4.4 3.2-7.6 7.2-7.6S28.4 21.6 28.4 26z" fill="#FFC928"/><path d="M25 26c0-5.6 4-10 8.8-10S42.6 20.4 42.6 26z" fill="#FF7A18"/><path d="M39 26c0-4.4 3.2-7.6 7.2-7.6S53.4 21.6 53.4 26z" fill="#C91F32"/><circle cx="18.5" cy="23" r="2" fill="#FFF8E9"/><circle cx="33" cy="21" r="2" fill="#FFF8E9"/><path d="M8 32h48l-3.6 13.6A6 6 0 0 1 46.6 50H17.4a6 6 0 0 1-5.8-4.4z" fill="#C91F32"/><rect x="6" y="28" width="52" height="6" rx="3" fill="#8E1222"/></symbol>
+    <symbol id="i-carne-plancha" viewBox="0 0 64 64"><ellipse cx="32" cy="54" rx="22" ry="4" fill="#8E1222" opacity=".15"/><path d="M8 36c0-12 11-20 25-20s23 8 23 18-10 19-24 19S8 46 8 36z" fill="#C91F32"/><path d="M13 35c0-9 9-14 20-14s18 6 18 13-8 14-19 14-19-5-19-13z" fill="#FF7A18"/><path d="M13 35c0-9 9-14 20-14s18 6 18 13" fill="none" stroke="#FFC928" stroke-width="2.6" stroke-linecap="round" opacity=".55"/><g stroke="#8E1222" stroke-width="2.4" stroke-linecap="round" opacity=".5"><path d="M23 27l4.5 18"/><path d="M37 24.5l4.5 19"/></g><path d="M19 21c2.5-1.6 5.5-2.4 8-2.4" fill="none" stroke="#FFF8E9" stroke-width="2.6" stroke-linecap="round" opacity=".55"/></symbol>
+    <symbol id="i-filete-pollo" viewBox="0 0 64 64"><ellipse cx="32" cy="53" rx="21" ry="3.8" fill="#8E1222" opacity=".15"/><path d="M10 34c0-9.5 9.5-17 22-17s22 6.5 22 15.5S45 48 32 48 10 43.5 10 34z" fill="#E8A900"/><path d="M13.5 33c0-8 8-13.5 18.5-13.5S50 25 50 31.5 42.5 44 32 44s-18.5-4.2-18.5-11z" fill="#FFC928"/><g fill="#D95E00" opacity=".4"><circle cx="22" cy="27" r="1.8"/><circle cx="31" cy="23.5" r="1.8"/><circle cx="41" cy="26.5" r="1.8"/><circle cx="26" cy="33" r="1.8"/><circle cx="36" cy="32" r="1.8"/><circle cx="45" cy="33" r="1.8"/><circle cx="20" cy="38" r="1.8"/><circle cx="31" cy="39" r="1.8"/></g><path d="M17 20.5c3.5-3 8-4.6 12-4.8" fill="none" stroke="#FFF8E9" stroke-width="2.6" stroke-linecap="round" opacity=".6"/></symbol>
+    <symbol id="i-jugos" viewBox="0 0 64 64"><ellipse cx="32" cy="57" rx="15" ry="3.4" fill="#8E1222" opacity=".15"/><rect x="34" y="5" width="4.8" height="22" rx="2.4" fill="#C91F32" transform="rotate(14 36 16)"/><path d="M15.5 19.5h33l-4.6 33a5 5 0 0 1-5 4.5H25.1a5 5 0 0 1-5-4.5z" fill="#FFF8E9"/><path d="M18 29.5h28l-3.3 23a5 5 0 0 1-5 4.3H26.3a5 5 0 0 1-5-4.3z" fill="#FF7A18"/><path d="M20 37.5h24" stroke="#FFC928" stroke-width="3.2" stroke-linecap="round" opacity=".85"/><path d="M19 24.5h26" stroke="#E4D5BC" stroke-width="2" stroke-linecap="round" opacity=".7"/></symbol>
+    <symbol id="i-limonadas" viewBox="0 0 64 64"><ellipse cx="32" cy="57" rx="15" ry="3.4" fill="#8E1222" opacity=".15"/><path d="M15.5 19.5h33l-4.6 33a5 5 0 0 1-5 4.5H25.1a5 5 0 0 1-5-4.5z" fill="#FFF8E9"/><path d="M18 29.5h28l-3.3 23a5 5 0 0 1-5 4.3H26.3a5 5 0 0 1-5-4.3z" fill="#FFC928"/><path d="M20 37.5h24" stroke="#FFF8E9" stroke-width="2.6" stroke-linecap="round" opacity=".8"/><circle cx="32" cy="20.5" r="10.5" fill="#FFC928"/><circle cx="32" cy="20.5" r="10.5" fill="none" stroke="#FFF8E9" stroke-width="2.8"/><g stroke="#FFF8E9" stroke-width="2" stroke-linecap="round"><path d="M32 12.5v16"/><path d="M24 20.5h16"/><path d="M26.4 14.9l11.2 11.2"/><path d="M37.6 14.9L26.4 26.1"/></g></symbol>
+    <symbol id="i-carrito" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3.5h2.3l2.5 12a1.7 1.7 0 0 0 1.7 1.4h9.2a1.7 1.7 0 0 0 1.7-1.3L21 7.2H6"/></g><circle cx="9.5" cy="20" r="1.5" fill="currentColor"/><circle cx="17.8" cy="20" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cerrar" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-papelera" viewBox="0 0 24 24"><path d="M3.5 6.5h17M9 6.5V4.5h6v2M6 6.5l1 13.2h10L18 6.5M10 10.5v5.5M14 10.5v5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-moto" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="17" r="3.1"/><circle cx="19" cy="17" r="3.1"/><path d="M8.1 17h4.4l3.2-6.2h3.1M12.5 17L9.6 11H6.4M15.7 10.8L16.6 7h3.1"/></g></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.2s6.8-6.4 6.8-11a6.8 6.8 0 1 0-13.6 0c0 4.6 6.8 11 6.8 11z"/><circle cx="12" cy="10" r="2.6"/></g></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 6.2A2.7 2.7 0 0 1 6.7 3.5h10.6A2.7 2.7 0 0 1 20 6.2v7.6a2.7 2.7 0 0 1-2.7 2.7H9.5L4.6 20.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-vacio" viewBox="0 0 64 64"><ellipse cx="32" cy="45" rx="22" ry="5.5" fill="#E4D5BC"/><circle cx="32" cy="29" r="16" fill="#FFF8E9" stroke="#FFC928" stroke-width="3"/><circle cx="32" cy="29" r="8.5" fill="#FFC928" opacity=".3"/><path d="M13 21c3-4 7.5-6.5 12-7.5" fill="none" stroke="#FF7A18" stroke-width="3" stroke-linecap="round" opacity=".7"/></symbol>
+    </defs>
+  </svg>
+<!-- KZ-ICONOS:FIN -->
+
 <a class="salto-contenido" href="#menu">Saltar al menú</a>
 
 <!-- ══════════════════ CABECERA ══════════════════ -->
@@ -48,7 +86,8 @@
   </nav>
 
   <button class="cabecera__carrito" type="button" id="abrir-carrito" aria-controls="carrito" aria-expanded="false">
-    🛒 Ver pedido <span class="cabecera__cuenta" id="cuenta-cabecera" aria-live="polite">0</span>
+    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-carrito"/></svg>
+    Ver pedido <span class="cabecera__cuenta" id="cuenta-cabecera" aria-live="polite">0</span>
   </button>
 </header>
 
@@ -67,9 +106,9 @@
       </p>
 
       <ul class="hero__insignias">
-        <li>🛵 Domicilio disponible</li>
-        <li>📍 Barrio Nueva Jerusalén</li>
-        <li>💬 Pedidos por WhatsApp</li>
+        <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-moto"/></svg> Domicilio disponible</li>
+        <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg> Barrio Nueva Jerusalén</li>
+        <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg> Pedidos por WhatsApp</li>
       </ul>
 
       <div class="hero__acciones">
@@ -101,16 +140,17 @@
     <div class="menu__cabeza">
       <h2 class="menu__titulo">Nuestro menú</h2>
       <p class="menu__nota">
-        Los precios se confirman por WhatsApp: aquí no publicamos cifras que el negocio no nos haya dado.
+        Precios por confirmar: te los pasamos por WhatsApp junto con el domicilio.
+        Elige tus platos y armamos el pedido contigo.
       </p>
     </div>
 
-    <div class="chips" role="navigation" aria-label="Categorías del menú">
-      <a class="chip" href="#combos" aria-current="true">Combos</a>
+    <nav class="chips" aria-label="Categorías del menú">
+      <a class="chip" href="#combos">Combos</a>
       <a class="chip" href="#pollo-asado">Pollo asado</a>
       <a class="chip" href="#rapidas">Comidas rápidas</a>
       <a class="chip" href="#bebidas">Bebidas</a>
-    </div>
+    </nav>
 
     <!-- COMBOS -->
     <section class="categoria" id="combos" aria-labelledby="t-combos">
@@ -118,7 +158,7 @@
       <div class="platillos">
 
         <article class="platillo" data-id="combo-apanado" data-nombre="Combo con Apanado">
-          <div class="platillo__icono" aria-hidden="true">🍗</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-combo-apanado"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Combo con Apanado</h4>
             <p class="platillo__precio">Consultar precio</p>
@@ -127,7 +167,7 @@
         </article>
 
         <article class="platillo" data-id="combo-ala" data-nombre="Combo con Ala">
-          <div class="platillo__icono" aria-hidden="true">🍗</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-combo-ala"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Combo con Ala</h4>
             <p class="platillo__precio">Consultar precio</p>
@@ -144,7 +184,7 @@
       <div class="platillos">
 
         <article class="platillo" data-id="pollo-entero" data-nombre="Pollo entero">
-          <div class="platillo__icono" aria-hidden="true">🍗</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-pollo-entero"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Pollo entero</h4>
             <p class="platillo__precio">Consultar precio</p>
@@ -153,7 +193,7 @@
         </article>
 
         <article class="platillo" data-id="medio-pollo" data-nombre="Medio pollo">
-          <div class="platillo__icono" aria-hidden="true">🍗</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-medio-pollo"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Medio pollo</h4>
             <p class="platillo__precio">Consultar precio</p>
@@ -170,7 +210,7 @@
       <div class="platillos">
 
         <article class="platillo" data-id="salchipapas" data-nombre="Salchipapas">
-          <div class="platillo__icono" aria-hidden="true">🍟</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-salchipapas"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Salchipapas</h4>
             <p class="platillo__precio">Consultar precio</p>
@@ -179,7 +219,7 @@
         </article>
 
         <article class="platillo" data-id="desgranado" data-nombre="Desgranado">
-          <div class="platillo__icono" aria-hidden="true">🌽</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-desgranado"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Desgranado</h4>
             <p class="platillo__precio">Consultar precio</p>
@@ -188,7 +228,7 @@
         </article>
 
         <article class="platillo" data-id="patacon" data-nombre="Patacón">
-          <div class="platillo__icono" aria-hidden="true">🍌</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-patacon"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Patacón</h4>
             <ul class="platillo__variantes" role="group" aria-label="Elige la variante de Patacón">
@@ -201,7 +241,7 @@
         </article>
 
         <article class="platillo" data-id="hamburguesa" data-nombre="Hamburguesa">
-          <div class="platillo__icono" aria-hidden="true">🍔</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-hamburguesa"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Hamburguesa</h4>
             <p class="platillo__precio">Consultar precio</p>
@@ -210,7 +250,7 @@
         </article>
 
         <article class="platillo" data-id="perros" data-nombre="Perros">
-          <div class="platillo__icono" aria-hidden="true">🌭</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-perros"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Perros</h4>
             <p class="platillo__precio">Consultar precio</p>
@@ -218,8 +258,8 @@
           <div class="platillo__accion"><button class="agregar" type="button" data-agregar>+ Añadir</button></div>
         </article>
 
-        <article class="platillo" data-id="chuzos" data-nombre="Chuzos">
-          <div class="platillo__icono" aria-hidden="true">🍢</div>
+        <article class="platillo" data-id="chuzos" data-nombre="Chuzo">
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-chuzos"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Chuzos</h4>
             <ul class="platillo__variantes" role="group" aria-label="Elige la variante de Chuzos">
@@ -232,7 +272,7 @@
         </article>
 
         <article class="platillo" data-id="picadas" data-nombre="Picadas">
-          <div class="platillo__icono" aria-hidden="true">🍱</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-picadas"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Picadas</h4>
             <p class="platillo__precio">Consultar precio</p>
@@ -241,7 +281,7 @@
         </article>
 
         <article class="platillo" data-id="carne-plancha" data-nombre="Carne a la plancha">
-          <div class="platillo__icono" aria-hidden="true">🥩</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-carne-plancha"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Carne a la plancha</h4>
             <p class="platillo__precio">Consultar precio</p>
@@ -250,7 +290,7 @@
         </article>
 
         <article class="platillo" data-id="filete-pollo" data-nombre="Filete de pollo">
-          <div class="platillo__icono" aria-hidden="true">🍗</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-filete-pollo"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Filete de pollo</h4>
             <p class="platillo__precio">Consultar precio</p>
@@ -267,7 +307,7 @@
       <div class="platillos">
 
         <article class="platillo" data-id="jugos" data-nombre="Jugo">
-          <div class="platillo__icono" aria-hidden="true">🥤</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-jugos"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Jugos</h4>
             <ul class="platillo__variantes" role="group" aria-label="Elige el jugo en agua o en leche">
@@ -280,7 +320,7 @@
         </article>
 
         <article class="platillo" data-id="limonadas" data-nombre="Limonada">
-          <div class="platillo__icono" aria-hidden="true">🍹</div>
+          <div class="platillo__icono" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-limonadas"/></svg></div>
           <div class="platillo__cuerpo">
             <h4 class="platillo__nombre">Limonadas</h4>
             <ul class="platillo__variantes" role="group" aria-label="Elige la limonada">
@@ -313,12 +353,14 @@
 <aside class="carrito" id="carrito" role="dialog" aria-modal="true" aria-labelledby="titulo-carrito" aria-hidden="true">
   <div class="carrito__cabeza">
     <h2 class="carrito__titulo" id="titulo-carrito">Tu pedido</h2>
-    <button class="carrito__cerrar" type="button" id="cerrar-carrito" aria-label="Cerrar el pedido">✕</button>
+    <button class="carrito__cerrar" type="button" id="cerrar-carrito" aria-label="Cerrar el pedido">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-cerrar"/></svg>
+    </button>
   </div>
 
   <div class="carrito__cuerpo" id="carrito-cuerpo">
     <div class="carrito__vacio" id="carrito-vacio">
-      <span aria-hidden="true">🍗</span>
+      <span class="carrito__vacio-icono" aria-hidden="true"><svg viewBox="0 0 64 64" focusable="false"><use href="#i-vacio"/></svg></span>
       Todavía no has añadido nada. Toca «+ Añadir» en cualquier plato.
     </div>
     <div id="carrito-lineas"></div>
@@ -372,9 +414,9 @@
              alt="BROSTY PAPAS">
       </div>
       <ul class="pie__datos">
-        <li>💬 <a href="https://wa.me/573003201296" target="_blank" rel="noopener noreferrer">WhatsApp 300 320 1296</a></li>
-        <li>📍 Barrio Nueva Jerusalén · <a href="https://wa.me/573003201296?text=Hola%20BROSTY%20PAPAS%2C%20me%20comparten%20la%20ubicaci%C3%B3n%3F" target="_blank" rel="noopener noreferrer">consultar ubicación</a></li>
-        <li>🛵 Domicilio disponible · confirma cobertura por WhatsApp</li>
+        <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg> <a href="https://wa.me/573003201296" target="_blank" rel="noopener noreferrer">WhatsApp 300 320 1296</a></li>
+        <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg> Barrio Nueva Jerusalén · <a href="https://wa.me/573003201296?text=Hola%20BROSTY%20PAPAS%2C%20me%20comparten%20la%20ubicaci%C3%B3n%3F" target="_blank" rel="noopener noreferrer">consultar ubicación</a></li>
+        <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-moto"/></svg> Domicilio disponible · confirma cobertura por WhatsApp</li>
       </ul>
     </div>
 
@@ -383,11 +425,12 @@
       <button class="btn btn--linea" type="button" id="compartir">Compartir</button>
       <a class="btn btn--amarillo" href="https://wa.me/573003201296?text=Hola%20BROSTY%20PAPAS%2C%20quiero%20hacer%20un%20pedido." target="_blank" rel="noopener noreferrer">Pedir ahora</a>
       <p class="pie__legal">
-        Precios y cobertura se confirman por WhatsApp. Página hecha por <a href="https://konfiozinc.github.io/card/" target="_blank" style="color: #ffffff; text-decoration: underline; font-weight: bold;">KONFÍO ZINC</a>.
+        Precios y cobertura se confirman por WhatsApp. Página hecha por
+        <a href="https://konfiozinc.github.io/card/" target="_blank" rel="noopener noreferrer">KONFÍO ZINC</a>
+        · <a href="https://konfiozinc.github.io/card/privacidad.html" target="_blank" rel="noopener noreferrer">Políticas de Privacidad</a>
       </p>
     </div>
   </div>
-· <a href="https://konfiozinc.github.io/card/privacidad.html" style="color: inherit; text-decoration: underline; opacity: 0.8;">Políticas de Privacidad</a>
 </footer>
 
 <script src="assets/js/app.js" defer></script>
